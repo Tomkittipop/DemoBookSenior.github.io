@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดห้องพัก - ระบบจัดการสถานดูแลผู้สูงอายุ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="theme-color" content="#2563eb">
+    <link rel="manifest" href="/manifest.json">
+    <style>
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+        }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .prev-btn {
+            left: 10px;
+        }
+        .next-btn {
+            right: 10px;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            text-align: center;
+        }
+        .calendar-header {
+            background: #2563eb;
+            color: white;
+            padding: 8px;
+        }
+        .calendar-day {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .available {
+            background: #d1fae5;
+        }
+        .unavailable {
+            background: #fee2e2;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .accordion-toggle:checked ~ .accordion-content {
+            max-height: 1000px;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-600">สถานดูแลผู้สูงอายุ</h1>
+            <nav>
+                <a href="index.html" class="text-gray-600 hover:text-blue-600 mx-2">หน้าแรก</a>
+                <a href="#booking" class="text-gray-600 hover:text-blue-600 mx-2">จองห้องพัก</a>
+                <a href="#contact" class="text-gray-600 hover:text-blue-600 mx-2">ติดต่อ</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Room Images Slider -->
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="slider-container">
+                <div class="slider" id="slider">
+                    <div class="slide">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSQF4E1bgq6GcHPCQ_Ol86Qu-4tfS30uPQTw&s" alt="ห้องเดี่ยวมุมมอง 1" class="w-full h-96 object-cover rounded-lg">
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="ห้องเดี่ยวมุมมอง 2" class="w-full h-96 object-cover rounded-lg">
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1618221710640-c0eaaa2adb49?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="ห้องเดี่ยวมุมมอง 3" class="w-full h-96 object-cover rounded-lg">
+                    </div>
+                </div>
+                <div class="slider-btn prev-btn" onclick="moveSlide(-1)">❮</div>
+                <div class="slider-btn next-btn" onclick="moveSlide(1)">❯</div>
+            </div>
+            <!-- Amenities Icons -->
+            <div class="flex justify-center space-x-6 mt-6">
+                <div class="text-center">
+                    <div class="text-3xl">🛏️</div>
+                    <p class="text-gray-600">เตียงปรับระดับ</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl">🛁</div>
+                    <p class="text-gray-600">ห้องน้ำส่วนตัว</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl">📺</div>
+                    <p class="text-gray-600">ทีวีและ Wi-Fi</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl">🩺</div>
+                    <p class="text-gray-600">ปุ่มฉุกเฉิน</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Room Details -->
+    <section class="py-8 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-6">ห้องเดี่ยว</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <p class="text-gray-600 mb-4"><strong>ประเภท:</strong> ห้องเดี่ยว</p>
+                    <p class="text-gray-600 mb-4"><strong>ขนาด:</strong> 25 ตารางเมตร</p>
+                    <p class="text-gray-600 mb-4"><strong>ราคา/วัน:</strong> 2,500 บาท</p>
+                    <p class="text-gray-600 mb-4"><strong>ราคา/เดือน:</strong> 60,000 บาท</p>
+                    <p class="text-gray-600">ห้องเดี่ยวที่ออกแบบมาเพื่อความสะดวกสบายของผู้สูงอายุ พร้อมสิ่งอำนวยความสะดวกครบครันและการดูแล 24 ชั่วโมง</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">ตรวจสอบสถานะห้องว่าง</h3>
+                    <div class="calendar">
+                        <div class="calendar-header">จ</div>
+                        <div class="calendar-header">อ</div>
+                        <div class="calendar-header">พ</div>
+                        <div class="calendar-header">พฤ</div>
+                        <div class="calendar-header">ศ</div>
+                        <div class="calendar-header">ส</div>
+                        <div class="calendar-header">อา</div>
+                        <div class="calendar-day"></div>
+                        <div class="calendar-day"></div>
+                        <div class="calendar-day available">1</div>
+                        <div class="calendar-day available">2</div>
+                        <div class="calendar-day unavailable">3</div>
+                        <div class="calendar-day available">4</div>
+                        <div class="calendar-day available">5</div>
+                        <div class="calendar-day available">6</div>
+                        <div class="calendar-day unavailable">7</div>
+                        <div class="calendar-day available">8</div>
+                        <div class="calendar-day available">9</div>
+                        <div class="calendar-day available">10</div>
+                        <div class="calendar-day unavailable">11</div>
+                        <div class="calendar-day available">12</div>
+                    </div>
+                    <p class="text-gray-600 mt-4"><span class="inline-block w-4 h-4 bg-green-100 mr-2"></span>ว่าง <span class="inline-block w-4 h-4 bg-red-100 mr-2 ml-4"></span>ไม่ว่าง</p>
+                </div>
+            </div>
+            <div class="text-center mt-8">
+                <a href="#booking-form" class="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition">จองห้องพัก</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-6">คำถามที่พบบ่อย</h2>
+            <div class="space-y-4">
+                <div>
+                    <input type="checkbox" id="faq1" class="accordion-toggle hidden">
+                    <label for="faq1" class="flex justify-between items-center bg-gray-100 p-4 rounded-lg cursor-pointer">
+                        <span>สามารถเยี่ยมผู้พักได้เมื่อไหร่?</span>
+                        <span class="text-blue-600">▼</span>
+                    </label>
+                    <div class="accordion-content bg-gray-50 p-4 rounded-b-lg">
+                        <p>สามารถเยี่ยมได้ทุกวันระหว่าง 09:00-17:00 น. กรุณาติดต่อล่วงหน้าหากต้องการเยี่ยมนอกเวลาดังกล่าว</p>
+                    </div>
+                </div>
+                <div>
+                    <input type="checkbox" id="faq2" class="accordion-toggle hidden">
+                    <label for="faq2" class="flex justify-between items-center bg-gray-100 p-4 rounded-lg cursor-pointer">
+                        <span>มีแพทย์หรือพยาบาลประจำหรือไม่?</span>
+                        <span class="text-blue-600">▼</span>
+                    </label>
+                    <div class="accordion-content bg-gray-50 p-4 rounded-b-lg">
+                        <p>เรามีทีมแพทย์และพยาบาลประจำตลอด 24 ชั่วโมงเพื่อดูแลผู้พักอย่างใกล</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Policies Section -->
+    <section class="py-8 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-6">นโยบายการจอง</h2>
+            <ul class="list-disc pl-6 text-gray-600">
+                <li class="mb-2">ต้องวางมัดจำ 30% ของราคาห้องพักเมื่อยยืนยันการจอง</li>
+                <li class="mb-2">สามารถยกเลิกการจองได้ฟรีภายใน 48 ชั่วโมงก่อนวันเข้าพัก</li>
+                <li class="mb-2">กรณียกเลิกหลังจากนั้น จะถูกหัก 50% ของเงินมัดจำ</li>
+                <li>กรุณาแจ้งความต้องการพิเศษ (เช่น อาหาร, อุปกรณ์ทางการแพทย์) ล่วงหน้าอย่างน้อย 7 วัน</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <footer-component></footer-component>
+
+    <script src="footer-component.js"></script>
+    <script>
+        // Slider Functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const slider = document.getElementById('slider');
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        // Auto-slide every 5 seconds
+        setInterval(() => moveSlide(1), 5000);
+
+        // PWA Installation Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            deferredPrompt = e;
+        });
+    </script>
+</body>
+</html>

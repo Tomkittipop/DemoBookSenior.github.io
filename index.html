@@ -1,0 +1,180 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หน้าแรก - ระบบจัดการสถานดูแลผู้สูงอายุ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="theme-color" content="#2563eb">
+    <link rel="manifest" href="/manifest.json"> <!-- PWA Support -->
+</head>
+<body class="font-sans bg-gray-100">
+    <!-- Hero Section -->
+    <section class="relative h-[600px] bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="text-center text-white">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">ระบบจัดการสถานดูแลผู้สูงอายุ</h1>
+                <p class="text-xl mb-6">เว็บไซต์และระบบจองที่ปรับแต่งได้ง่าย รองรับทั้งสถานดูแลและครอบครัว</p>
+                <div class="space-x-4">
+                    <a href="#demo" class="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition">สำรองห้องพัก</a>
+                    <a href="#demo" class="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-gray-200 transition">ทดลองใช้ระบบ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">คุณค่าที่เรามอบให้</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="text-4xl text-blue-600 mb-4">⚙️</div>
+                    <h3 class="text-xl font-semibold mb-2">ระบบปรับแต่งได้</h3>
+                    <p class="text-gray-600">เว็บไซต์และระบบจองที่ออกแบบมาให้สถานดูแลปรับแต่งได้ตามต้องการ</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl text-blue-600 mb-4">📱</div>
+                    <h3 class="text-xl font-semibold mb-2">ใช้งานง่ายบนมือถือ</h3>
+                    <p class="text-gray-600">รองรับ PWA ช่วยให้ครอบครัวจองและติดตามข้อมูลได้ทุกที่</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl text-blue-600 mb-4">💸</div>
+                    <h3 class="text-xl font-semibold mb-2">ลดต้นทุน</h3>
+                    <p class="text-gray-600">โซลูชัน SaaS ที่ช่วยลดค่าใช้จ่ายในการพัฒนาระบบภายใน</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Section -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">แพ็กเกจสำหรับสถานดูแล</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <h3 class="text-xl font-semibold mb-2">Starter</h3>
+                    <p class="text-gray-600 mb-4">เหมาะสำหรับสถานดูแลขนาดเล็ก ฟีเจอร์พื้นฐานครบครัน</p>
+                    <a href="#pricing" class="text-blue-600 hover:underline">ดูรายละเอียด</a>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <h3 class="text-xl font-semibold mb-2">Professional</h3>
+                    <p class="text-gray-600 mb-4">เหมาะสำหรับสถานดูแลขนาดกลาง พร้อมโมดูลเสริม</p>
+                    <a href="#pricing" class="text-blue-600 hover:underline">ดูรายละเอียด</a>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <h3 class="text-xl font-semibold mb-2">Enterprise</h3>
+                    <p class="text-gray-600 mb-4">โซลูชันครบวงจรสำหรับโรงพยาบาลและสถานดูแลขนาดใหญ่</p>
+                    <a href="#pricing" class="text-blue-600 hover:underline">ดูรายละเอียด</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rooms Section (for B2C) -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">ประเภทห้องพักสำหรับครอบครัว</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSQF4E1bgq6GcHPCQ_Ol86Qu-4tfS30uPQTw&s" alt="ห้องเดี่ยว" class="w-full h-48 object-cover rounded-t-lg mb-4">
+                    <h3 class="text-xl font-semibold mb-2">ห้องเดี่ยว</h3>
+                    <p class="text-gray-600 mb-4">ห้องส่วนตัวพร้อมสิ่งอำนวยความสะดวกครบครัน</p>
+                    <a href="/room-detail.html" class="text-blue-600 hover:underline">จองเลย</a>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <img src="https://kinrehab.com/upload/images/%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%84%E0%B8%B9%E0%B9%88/Twin%20Room-33.jpg" alt="ห้องคู่" class="w-full h-48 object-cover rounded-t-lg mb-4">
+                    <h3 class="text-xl font-semibold mb-2">ห้องคู่</h3>
+                    <p class="text-gray-600 mb-4">เหมาะสำหรับผู้ที่ต้องการเพื่อนร่วมห้อง</p>
+                    <a href="#booking" class="text-blue-600 hover:underline">จองเลย</a>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                    <img src="https://scg-home-prod-dam-product.s3.ap-southeast-1.amazonaws.com/1e3c0f8252f6463b86c11fea35ca74f7.jpg">
+                    <h3 class="text-xl font-semibold mb-2">ห้องวีไอพี</h3>
+                    <p class="text-gray-600 mb-4">ห้องพักสุดหรูพร้อมบริการพิเศษ</p>
+                    <a href="#booking" class="text-blue-600 hover:underline">จองเลย</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Virtual Tour Button -->
+    <section class="py-16 bg-blue-600 text-white text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-6">สัมผัสประสบการณ์ผ่าน PWA</h2>
+            <p class="mb-6">สำรวจสถานที่เสมือนจริงได้ทุกที่ผ่านมือถือของคุณ</p>
+            <a href="#virtual-tour" class="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-gray-200 transition">เริ่ม Virtual Tour</a>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">คำรับรองจากลูกค้า</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-100 rounded-lg p607-4">
+                    <p class="text-gray-600 italic mb-4">"ระบบนี้ช่วยให้เราจัดการจองได้ง่ายและลดต้นทุนมหาศาล!"</p>
+                    <p class="font-semibold">คุณสมศรี ผู้จัดการสถานดูแล</p>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-6">
+                    <p class="text-gray-600 italic mb-4">"จองห้องให้พ่อผ่านมือถือได้สะดวกมาก ทีมงานตอบไวและช่วยเหลือดี"</p>
+                    <p class="font-semibold">คุณนฤมล ลูกสาวผู้ใช้บริการ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   <!-- Footer Component -->
+    <footer-component></footer-component>
+
+    <script src="footer-component.js"></script>
+
+    <script>
+        // PWA Installation Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            deferredPrompt = e;
+            // Show install button or notify user
+        });
+    </script>
+</body>
+</html>
