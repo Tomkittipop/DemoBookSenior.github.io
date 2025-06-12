@@ -7,22 +7,14 @@ class FooterComponent extends HTMLElement {
                         <div>
                             <h3 class="text-xl font-semibold mb-4">ติดต่อเรา</h3>
                             <p>123 ถนนสุขภาพดี, กรุงเทพฯ 10110</p>
-                            <p>โทร: 02-123-4567</p>
-                            <p><a href="mailto:support@carehome.com" class="hover:underline">อีเมล: support@carehome.com</a></p>
+                            <p>โทร: 095-986-4670</p>
+                            <p><a href="mailto:elderlyhomecontract@gmail.com" class="hover:underline">อีเมล: elderlyhomecontract@gmail.com</a></p>
                             <p><a href="index.html" class="hover:underline">กลับไปหน้าแรก</a></p>
                         </div>
                         <div>
     <h3 class="text-xl font-semibold mb-4">แผนที่</h3>
-    <div class="h-32 rounded-lg overflow-hidden"> 
-        <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.276495576837!2d100.5694769!3d13.7663242!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29d72a7c73a0b%3A0x6b87640a2a3b7540!2sCentralWorld!5e0!3m2!1sen!2sth!4v1625464800000!5m2!1sen!2sth" 
-            width="100%" 
-            height="100%" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+    <div class="h-40 rounded-lg overflow-hidden"> 
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3873.9054416533872!2d100.43357107463954!3d13.844714186556917!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2918fffffffff%3A0x8895be0cf1a1d540!2z4Lin4Lix4LiU4Lia4Liy4LiH4LmA4Lil4LiZ4LmA4LiI4Lij4Li04LiN!5e0!3m2!1sth!2sth!4v1749658167314!5m2!1sth!2sth" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
 </div>
                         <div>
